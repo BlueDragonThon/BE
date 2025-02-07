@@ -3,9 +3,9 @@ name: Java CI with Gradle
 # 동작 조건 설정: master 브랜치에 push 또는 pull request가 발생할 경우 실행
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "develop" ]
 
 # GitHub Actions가 접근 가능한 권한 설정
 permissions:
