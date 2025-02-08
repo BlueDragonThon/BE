@@ -9,11 +9,13 @@ import com.example.template.domain.review.dto.ReviewUpdateDto;
 import com.example.template.domain.review.entity.Review;
 import com.example.template.domain.review.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
@@ -22,6 +24,9 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Long createReview(ReviewRequestDto reviewRequestDto, Member member) {
+
+        log.info("create review {} , {}", reviewRequestDto.getContent(), member.getName());
+
         Review review = Review.builder()
                 .member(member)
                 .college(reviewRequestDto.getCollege())
