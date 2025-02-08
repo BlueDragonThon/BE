@@ -1,8 +1,8 @@
-package com.example.template.domain.example.controller;
+package com.example.template.domain.college.controller;
 
-import com.example.template.domain.example.entity.College;
-import com.example.template.domain.example.entity.Coordinate;
-import com.example.template.domain.example.service.CollegeService;
+import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.entity.Coordinate;
+import com.example.template.domain.college.service.CollegeService;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.PostMapping;

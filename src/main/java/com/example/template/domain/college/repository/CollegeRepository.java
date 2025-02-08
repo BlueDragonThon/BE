@@ -1,6 +1,8 @@
-package com.example.template.domain.example.repository;
 
-import com.example.template.domain.example.entity.College;
+package com.example.template.domain.college.repository;
+
+import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.entity.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

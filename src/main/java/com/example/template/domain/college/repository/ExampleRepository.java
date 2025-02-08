@@ -1,6 +1,6 @@
-package com.example.template.domain.example.repository;
+package com.example.template.domain.college.repository;
 
-import com.example.template.domain.example.entity.Example;
+import com.example.template.domain.college.entity.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

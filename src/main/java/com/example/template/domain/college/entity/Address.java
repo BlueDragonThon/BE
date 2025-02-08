@@ -1,4 +1,4 @@
-package com.example.template.domain.example.entity;
+package com.example.template.domain.college.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

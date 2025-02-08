@@ -1,8 +1,8 @@
-package com.example.template.domain.example.service;
+package com.example.template.domain.college.service;
 
-import com.example.template.domain.example.entity.College;
-import com.example.template.domain.example.entity.Coordinate;
-import com.example.template.domain.example.repository.CollegeRepository;
+import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.entity.Coordinate;
+import com.example.template.domain.college.repository.CollegeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
