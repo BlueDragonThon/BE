@@ -12,6 +12,7 @@ import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.service.CollegeService;
 import com.example.template.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,13 @@ public class AlarmController {
 
     @GetMapping("/get")
     @Operation(summary = "알림가져오기")
-    public ApiResponse<List<AlarmResponseDto>> getAlarm(@AuthUser Member member) {
+    public ApiResponse<List<AlarmResponseDto>> getAlarm(@Parameter(hidden = true) @AuthUser Member member) {
         return ApiResponse.onSuccess(alarmService.getAllAlarms(member));
     }
 
     @DeleteMapping("/{notificationId}")
     @Operation(summary = "알림지우기")
-    public ApiResponse<Long> deleteAlarm(@AuthUser Member member, @PathVariable Long notificationId) {
+    public ApiResponse<Long> deleteAlarm(@Parameter(hidden = true) @AuthUser Member member, @PathVariable Long notificationId) {
         return ApiResponse.onSuccess(alarmService.deleteAlarm(member, notificationId));
     }
 

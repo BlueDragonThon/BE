@@ -7,6 +7,7 @@ import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.service.CollegeService;
 import com.example.template.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class CollegeController {
     private final CollegeService collegeService;
     @PostMapping("/search")
     @Operation(summary = "직선거리 기준 검색(사용자 데이터에 저장된 위치 값 이용)")
-    public ApiResponse<CollegeSearchDTO> searchCollegesByMemberDistance(@AuthUser Member member,
+    public ApiResponse<CollegeSearchDTO> searchCollegesByMemberDistance(@Parameter(hidden = true) @AuthUser Member member,
                                                                         @Nullable @RequestParam("page") Integer page) {
         CollegeSearchDTO result;
         Coordinate coordinate = member.getCoordinate();
@@ -34,7 +35,7 @@ public class CollegeController {
     }
     @PostMapping("/distance")
     @Operation(summary = "직선거리 기준 검색(별도 제공된 위치 값 이용)")
-    public ApiResponse<CollegeSearchDTO> searchCollegesByDistance(@AuthUser Member member,
+    public ApiResponse<CollegeSearchDTO> searchCollegesByDistance(@Parameter(hidden = true) @AuthUser Member member,
                                                                   @RequestBody CollegeSearchParamDTO param) {
         CollegeSearchDTO result;
         if (param.getAcr()==null||param.getDwn()==null)
@@ -56,7 +57,7 @@ public class CollegeController {
 
     @PostMapping("/name")
     @Operation(summary = "대학 이름 기반으로 검색")
-    public ApiResponse<CollegeSearchDTO> searchCollegeByName(@AuthUser Member member,
+    public ApiResponse<CollegeSearchDTO> searchCollegeByName(@Parameter(hidden = true) @AuthUser Member member,
                                                              @RequestBody NamePageDto dto) {
         String name = dto.getName();
         CollegeSearchDTO result;
@@ -73,7 +74,7 @@ public class CollegeController {
 
     @PostMapping("/program")
     @Operation(summary = "프로그램 기반으로 검색")
-    public ApiResponse<CollegeSearchDTO> searchCollegeByProgram(@AuthUser Member member,
+    public ApiResponse<CollegeSearchDTO> searchCollegeByProgram(@Parameter(hidden = true) @AuthUser Member member,
                                                                 @RequestBody ProgramPageDto dto) {
         String program = dto.getProgram();
         CollegeSearchDTO result;
@@ -90,12 +91,12 @@ public class CollegeController {
 
     @PostMapping("/like")
     @Operation(summary = "대학교 찜하기")
-    public ApiResponse<Long> createMemberCollege(@AuthUser Member member, @RequestParam("collegeId") Long collegeId){
+    public ApiResponse<Long> createMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") Long collegeId){
         return ApiResponse.onSuccess(collegeService.createMemberCollege(member, collegeId));
     }
     @PostMapping("/likeSearch")
     @Operation(summary = "찜한 목록 조회")
-    public ApiResponse<CollegeSearchDTO> searchFavoriteColleges(@AuthUser Member member,
+    public ApiResponse<CollegeSearchDTO> searchFavoriteColleges(@Parameter(hidden = true) @AuthUser Member member,
                                                                 @Nullable @RequestParam("page") Integer page) {
         CollegeSearchDTO result;
         if (page == null)
