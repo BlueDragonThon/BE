@@ -20,4 +20,6 @@ public interface CollegeService {
     CollegeSearchDTO getCollegeByProgram(Member member, String program);
     CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate, int page);
     CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate);
+    CollegeSearchDTO searchFavorites(Member member, int page);
+    CollegeSearchDTO searchFavorites(Member member);
 }
