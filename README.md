@@ -13,8 +13,7 @@
 - **Team** :
     - **FE :** 현소영, 김건율
     - **BE :** 정현승, 백범준, 이준형
-- **FE Repo** :
-- **시연 영상** :
+- **시연 영상** : https://youtube.com/shorts/tAF0pUOUXPE
 
 ---
 
