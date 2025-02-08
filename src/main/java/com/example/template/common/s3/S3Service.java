@@ -3,6 +3,9 @@ package com.example.template.common.s3;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.entity.Coordinate;
+import com.example.template.domain.college.repository.CollegeRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ import java.util.List;
 public class S3Service {
 
     private final AmazonS3 amazonS3;
+    private final CollegeRepository collegeRepository;
 
     @Value("${aws.s3.bucket}")
     private String bucket;
@@ -41,7 +45,6 @@ public class S3Service {
                 new InputStreamReader(s3Object.getObjectContent(), "UTF-8"));
              CSVReader csvReader = new CSVReader(bufferedReader)) {
 
-            List<String[]> rows = new ArrayList<>();
             String[] row;
             csvReader.readNext();
 
@@ -50,7 +53,18 @@ public class S3Service {
             while((row = csvReader.readNext()) != null) {
                 List<String> values = Arrays.stream(row).toList();
 
-                
+                College college = College.builder()
+                        .name(values.get(1))
+                        .headmaster(values.get(2))
+                        .contactNo(values.get(3))
+                        .address(values.get(4))
+                        .coordinate(Coordinate.builder()
+                                .dwn(Double.parseDouble(values.get(5)))
+                                .acr(Double.parseDouble(values.get(6)))
+                                .build())
+                        .build();
+
+                collegeRepository.save(college);
             }
 
         } catch (IOException | CsvValidationException e) {

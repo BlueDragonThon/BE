@@ -1,4 +1,4 @@
-package com.example.template.domain.example.entity;
+package com.example.template.domain.college.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,13 +16,13 @@ public class College {
     /**
      * 대학 이름
      */
-    @Column(length = 16)
+    @Column(length = 50)
     private String name;
 
     /**
      * 대학장
      */
-    @Column(length = 5)
+    @Column(length = 30)
     private String headmaster;
 
     /**
