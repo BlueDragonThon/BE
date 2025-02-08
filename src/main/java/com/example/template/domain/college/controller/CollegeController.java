@@ -11,12 +11,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "캐스트 API", description = "캐스트 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/college")
+@Slf4j
 public class CollegeController {
 
     private final CollegeService collegeService;
@@ -76,6 +78,9 @@ public class CollegeController {
     @Operation(summary = "프로그램 기반으로 검색")
     public ApiResponse<CollegeSearchDTO> searchCollegeByProgram(@Parameter(hidden = true) @AuthUser Member member,
                                                                 @RequestBody ProgramPageDto dto) {
+        log.info("멤버 명 {}", member.getName());
+        log.info("입력 받은 프로그램명: {}", dto.getPage());
+
         String program = dto.getProgram();
         CollegeSearchDTO result;
         if (program==null||program.isBlank()) throw new NullPointerException("프로그램 정보가 없습니다.");
