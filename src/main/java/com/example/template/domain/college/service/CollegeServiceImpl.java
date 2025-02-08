@@ -3,6 +3,8 @@ package com.example.template.domain.college.service;
 import com.example.template.common.exception.handler.GeneralHandler;
 import com.example.template.common.response.status.ErrorCode;
 import com.example.template.domain.alarm.service.AlarmService;
+import com.example.template.domain.college.dto.CollegeResponseDto;
+import com.example.template.domain.college.dto.CollegeSearchDTO;
 import com.example.template.domain.college.entity.College;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.repository.CollegeRepository;
@@ -23,30 +25,33 @@ public class CollegeServiceImpl implements CollegeService {
     private final AlarmService alarmService;
     private static final int PAGE_SIZE = 5;
 
-    public Page<College> getCollegeByName(String name, int page) {
-        return collegeRepository.findAllByNameContaining(PageRequest.of(page-1, PAGE_SIZE),name);
+    public CollegeSearchDTO getCollegeByName(String name, int page) {
+        return new CollegeSearchDTO(
+                collegeRepository.findAllByNameContaining(PageRequest.of(page-1, PAGE_SIZE),name));
     }
 
-    public Page<College> getCollegeByProgram(String program, int page) {
-        return collegeRepository.findAllByProgramContaining(PageRequest.of(page-1, PAGE_SIZE),program);
+    public CollegeSearchDTO getCollegeByProgram(String program, int page) {
+        return new CollegeSearchDTO(
+                collegeRepository.findAllByProgramContaining(PageRequest.of(page-1, PAGE_SIZE),program));
     }
 
     @Override
-    public Page<College> getCollegeByName(String name) {
+    public CollegeSearchDTO getCollegeByName(String name) {
         return getCollegeByName(name, 1);
     }
 
     @Override
-    public Page<College> getCollegeByProgram(String program) {
+    public CollegeSearchDTO getCollegeByProgram(String program) {
         return getCollegeByProgram(program, 1);
     }
 
-    public Page<College> searchCollegesByDistance(Coordinate coordinate, int page) {
-        return collegeRepository.searchCollegesByDistance(PageRequest.of(page-1, PAGE_SIZE),
-                coordinate.getAcr(),coordinate.getDwn());
+    public CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate, int page) {
+        return new CollegeSearchDTO(
+                collegeRepository.searchCollegesByDistance(PageRequest.of(page-1, PAGE_SIZE),
+                coordinate.getAcr(),coordinate.getDwn()));
     }
 
-    public Page<College> searchCollegesByDistance(Coordinate coordinate) {
+    public CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate) {
         return searchCollegesByDistance(coordinate, 1);
     }
 
@@ -66,4 +71,51 @@ public class CollegeServiceImpl implements CollegeService {
 
         return memberCollege.getId();
     }
+
+    @Override
+    public CollegeSearchDTO getCollegeByName(Member member, String name, int page) {
+        Page<CollegeResponseDto> result = collegeRepository.findAllByNameWithFavorites
+                (PageRequest.of(page - 1, PAGE_SIZE), '%'+name+'%', member);
+        return CollegeSearchDTO.builder()
+                .result(result.toList())
+                .pageCount(result.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public CollegeSearchDTO getCollegeByProgram(Member member, String program, int page) {
+        Page<CollegeResponseDto> result = collegeRepository.findAllByProgramWithFavorites
+                (PageRequest.of(page - 1, PAGE_SIZE), '%'+program+'%', member);
+        return CollegeSearchDTO.builder()
+                .result(result.toList())
+                .pageCount(result.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public CollegeSearchDTO getCollegeByName(Member member, String name) {
+        return getCollegeByName(member, name, 1);
+    }
+
+    @Override
+    public CollegeSearchDTO getCollegeByProgram(Member member, String program) {
+        return getCollegeByProgram(member, program, 1);
+    }
+
+    @Override
+    public CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate, int page) {
+        Page<CollegeResponseDto> result = collegeRepository.searchCollegesByDistanceWithFavorites(
+                PageRequest.of(page-1, PAGE_SIZE),
+                coordinate.getAcr(),coordinate.getDwn(),member);
+        return CollegeSearchDTO.builder()
+                .result(result.toList())
+                .pageCount(result.getTotalPages())
+                .build();
+    }
+
+    @Override
+    public CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate) {
+        return searchCollegesByDistance(member, coordinate, 1);
+    }
 }
+

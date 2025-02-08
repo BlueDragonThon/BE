@@ -1,18 +1,23 @@
 package com.example.template.domain.college.service;
 
-import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.dto.CollegeSearchDTO;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.member.entity.Member;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CollegeService {
-    Page<College> getCollegeByName(String name);
-    Page<College> getCollegeByProgram(String program);
-    Page<College> getCollegeByName(String name, int page);
-    Page<College> getCollegeByProgram(String program, int page);
-    Page<College> searchCollegesByDistance(Coordinate coordinate, int page);
-    Page<College> searchCollegesByDistance(Coordinate coordinate);
+    CollegeSearchDTO getCollegeByName(String name);
+    CollegeSearchDTO getCollegeByProgram(String program);
+    CollegeSearchDTO getCollegeByName(String name, int page);
+    CollegeSearchDTO getCollegeByProgram(String program, int page);
+    CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate, int page);
+    CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate);
     Long createMemberCollege(Member member, Long collegeId);
+    CollegeSearchDTO getCollegeByName(Member member, String name, int page);
+    CollegeSearchDTO getCollegeByProgram(Member member, String program, int page);
+    CollegeSearchDTO getCollegeByName(Member member, String name);
+    CollegeSearchDTO getCollegeByProgram(Member member, String program);
+    CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate, int page);
+    CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate);
 }
