@@ -12,6 +12,7 @@ import com.example.template.domain.college.repository.MemberCollegeRepository;
 import com.example.template.domain.mapping.MemberCollege;
 import com.example.template.domain.member.entity.Member;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CollegeServiceImpl implements CollegeService {
 
     private final CollegeRepository collegeRepository;
@@ -29,42 +31,49 @@ public class CollegeServiceImpl implements CollegeService {
     private static final int PAGE_SIZE = 5;
 
     public CollegeSearchDTO getCollegeByName(String name, int page) {
+        log.info("Searching colleges by name: {}, page: {}", name, page);
         return new CollegeSearchDTO(
-                collegeRepository.findAllByNameContaining(PageRequest.of(page-1, PAGE_SIZE),name));
+                collegeRepository.findAllByNameContaining(PageRequest.of(page - 1, PAGE_SIZE), name));
     }
 
     public CollegeSearchDTO getCollegeByProgram(String program, int page) {
+        log.info("Searching colleges by program: {}, page: {}", program, page);
         return new CollegeSearchDTO(
-                collegeRepository.findAllByProgramContaining(PageRequest.of(page-1, PAGE_SIZE),program));
+                collegeRepository.findAllByProgramContaining(PageRequest.of(page - 1, PAGE_SIZE), program));
     }
 
     @Override
     public CollegeSearchDTO getCollegeByName(String name) {
+        log.info("Searching colleges by name: {}", name);
         return getCollegeByName(name, 1);
     }
 
     @Override
     public CollegeSearchDTO getCollegeByProgram(String program) {
+        log.info("Searching colleges by program: {}", program);
         return getCollegeByProgram(program, 1);
     }
 
     public CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate, int page) {
+        log.info("Searching colleges by distance, page: {}, coordinates: ({}, {})", page, coordinate.getAcr(), coordinate.getDwn());
         return new CollegeSearchDTO(
-                collegeRepository.searchCollegesByDistance(PageRequest.of(page-1, PAGE_SIZE),
-                coordinate.getAcr(),coordinate.getDwn()));
+                collegeRepository.searchCollegesByDistance(PageRequest.of(page - 1, PAGE_SIZE),
+                        coordinate.getAcr(), coordinate.getDwn()));
     }
 
     public CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate) {
+        log.info("Searching colleges by distance, coordinates: ({}, {})", coordinate.getAcr(), coordinate.getDwn());
         return searchCollegesByDistance(coordinate, 1);
     }
 
     @Override
     public Long createMemberCollege(Member member, Long collegeId) {
+        log.info("Member {} is adding college with ID: {}", member.getName(), collegeId);
 
-        College college = collegeRepository.findById(collegeId).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+        College college = collegeRepository.findById(collegeId).orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         MemberCollege memberCollege = MemberCollege.builder()
-                 .member(member)
+                .member(member)
                 .college(college)
                 .build();
 
@@ -72,14 +81,15 @@ public class CollegeServiceImpl implements CollegeService {
 
         alarmService.createAlarm(memberCollege);
 
+        log.info("Member college added with ID: {}", memberCollege.getId());
         return memberCollege.getId();
     }
 
-
     @Transactional
     public Long deleteMemberCollege(Member member, Long collegeId) {
+        log.info("Member {} is deleting college with ID: {}", member.getName(), collegeId);
 
-        College college = collegeRepository.findById(collegeId).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+        College college = collegeRepository.findById(collegeId).orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         Optional<MemberCollege> memberCollege = memberCollegeRepository.findByMemberAndCollege(member, college);
 
@@ -87,6 +97,8 @@ public class CollegeServiceImpl implements CollegeService {
             MemberCollege removeData = memberCollege.get();
             memberCollegeRepository.delete(removeData);
             alarmService.deleteAlarm(removeData);
+
+            log.info("Member college with ID {} deleted successfully", removeData.getId());
             return removeData.getId();
         }
         throw new GeneralHandler(ErrorCode._BAD_REQUEST);
@@ -94,8 +106,9 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO getCollegeByName(Member member, String name, int page) {
+        log.info("Searching colleges by name for member: {}, name: {}, page: {}", member.getName(), name, page);
         Page<CollegeResponseDto> result = collegeRepository.findAllByNameWithFavorites
-                (PageRequest.of(page - 1, PAGE_SIZE), '%'+name+'%', member);
+                (PageRequest.of(page - 1, PAGE_SIZE), '%' + name + '%', member);
         return CollegeSearchDTO.builder()
                 .result(result.toList())
                 .pageCount(result.getTotalPages())
@@ -104,8 +117,9 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO getCollegeByProgram(Member member, String program, int page) {
+        log.info("Searching colleges by program for member: {}, program: {}, page: {}", member.getName(), program, page);
         Page<CollegeResponseDto> result = collegeRepository.findAllByProgramWithFavorites
-                (PageRequest.of(page - 1, PAGE_SIZE), '%'+program+'%', member);
+                (PageRequest.of(page - 1, PAGE_SIZE), '%' + program + '%', member);
         return CollegeSearchDTO.builder()
                 .result(result.toList())
                 .pageCount(result.getTotalPages())
@@ -114,19 +128,22 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO getCollegeByName(Member member, String name) {
+        log.info("Searching colleges by name for member: {}, name: {}", member.getName(), name);
         return getCollegeByName(member, name, 1);
     }
 
     @Override
     public CollegeSearchDTO getCollegeByProgram(Member member, String program) {
+        log.info("Searching colleges by program for member: {}, program: {}", member.getName(), program);
         return getCollegeByProgram(member, program, 1);
     }
 
     @Override
     public CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate, int page) {
+        log.info("Searching colleges by distance for member: {}, page: {}, coordinates: ({}, {})", member.getName(), page, coordinate.getAcr(), coordinate.getDwn());
         Page<CollegeResponseDto> result = collegeRepository.searchCollegesByDistanceWithFavorites(
-                PageRequest.of(page-1, PAGE_SIZE),
-                coordinate.getAcr(),coordinate.getDwn(),member);
+                PageRequest.of(page - 1, PAGE_SIZE),
+                coordinate.getAcr(), coordinate.getDwn(), member);
         return CollegeSearchDTO.builder()
                 .result(result.toList())
                 .pageCount(result.getTotalPages())
@@ -135,11 +152,13 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate) {
+        log.info("Searching colleges by distance for member: {}, coordinates: ({}, {})", member.getName(), coordinate.getAcr(), coordinate.getDwn());
         return searchCollegesByDistance(member, coordinate, 1);
     }
 
     @Override
     public CollegeSearchDTO searchFavorites(Member member, int page) {
+        log.info("Searching favorite colleges for member: {}, page: {}", member.getName(), page);
         Page<College> byFavorites = memberCollegeRepository.findByFavorites(
                 PageRequest.of(page - 1, PAGE_SIZE), member);
         return CollegeSearchDTO.builder()
@@ -150,7 +169,7 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO searchFavorites(Member member) {
+        log.info("Searching favorite colleges for member: {}", member.getName());
         return searchFavorites(member, 1);
     }
 }
-

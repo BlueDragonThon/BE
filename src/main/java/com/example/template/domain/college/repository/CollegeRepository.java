@@ -25,8 +25,10 @@ public interface CollegeRepository extends JpaRepository<College, Long> {
 
     @Query(getFavorites + "where c.name like :collegeName")
     Page<CollegeResponseDto> findAllByNameWithFavorites(Pageable pageable, String collegeName, Member member);
+
     @Query(getFavorites + "where c.program like :programName")
     Page<CollegeResponseDto> findAllByProgramWithFavorites(Pageable pageable, String programName, Member member);
+
     @Query(getFavorites + "order by"+
             " (coalesce(c.coordinate.acr,0.0) - :acr)*(coalesce(c.coordinate.acr,0.0) - :acr) +"+
             " (coalesce(c.coordinate.dwn,0.0) - :dwn)*(coalesce(c.coordinate.dwn,0.0) - :dwn)")
