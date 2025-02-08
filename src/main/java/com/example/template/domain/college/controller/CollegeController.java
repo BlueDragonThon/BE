@@ -1,9 +1,11 @@
 package com.example.template.domain.college.controller;
 
+import com.example.template.common.annotation.AuthUser;
 import com.example.template.common.response.ApiResponse;
 import com.example.template.domain.college.dto.*;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.service.CollegeService;
+import com.example.template.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +52,11 @@ public class CollegeController {
         if (dto.getPage()==null) result = new CollegeSearchDTO(collegeService.getCollegeByProgram(program));
         else result = new CollegeSearchDTO(collegeService.getCollegeByProgram(program, dto.getPage()));
         return ApiResponse.onSuccess(result);
+    }
+
+    @PostMapping("/like")
+    @Operation(summary = "대학교 찜하기")
+    public ApiResponse<Long> createMemberCollege(@AuthUser Member member, @RequestParam("collegeId") Long collegeId){
+        return ApiResponse.onSuccess(collegeService.createMemberCollege(member, collegeId));
     }
 }
