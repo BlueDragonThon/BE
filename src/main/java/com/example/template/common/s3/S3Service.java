@@ -62,6 +62,7 @@ public class S3Service {
                                 .dwn(Double.parseDouble(values.get(5)))
                                 .acr(Double.parseDouble(values.get(6)))
                                 .build())
+                        .program(values.get(7))
                         .build();
 
                 collegeRepository.save(college);

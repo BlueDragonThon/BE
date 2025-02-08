@@ -42,4 +42,6 @@ public class College {
      */
     @Embedded
     private Coordinate coordinate;
+
+    private String program;
 }
