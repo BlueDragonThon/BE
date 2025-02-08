@@ -10,7 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,13 +23,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<College> collegeList = collegeRepository.findAllByNameContaining(name);
 
         return collegeList.stream()
-                .map(college -> CollegeResponseDto.builder()
-                        .id(college.getId())
-                        .name(college.getName())
-                        .contactInfo(college.getContactNo())
-                        .address(college.getAddress())
-                        .program(college.getProgram())
-                        .build())
+                .map(CollegeResponseDto::new)
                 .toList();
     }
 
@@ -39,13 +32,7 @@ public class CollegeServiceImpl implements CollegeService {
         List<College> collegeList = collegeRepository.findAllByProgramContaining(program);
 
         return collegeList.stream()
-                .map(college -> CollegeResponseDto.builder()
-                        .id(college.getId())
-                        .name(college.getName())
-                        .contactInfo(college.getContactNo())
-                        .address(college.getAddress())
-                        .program(college.getProgram())
-                        .build())
+                .map(CollegeResponseDto::new)
                 .toList();
     }
 

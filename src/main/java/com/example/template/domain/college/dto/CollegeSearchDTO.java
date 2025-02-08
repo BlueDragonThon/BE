@@ -12,11 +12,13 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 public class CollegeSearchDTO{
-    private List<College> result;
+    private List<CollegeResponseDto> result;
     private int pageCount;
 
     public CollegeSearchDTO(Page<College> resData) {
-        result = resData.toList();
+        result = resData.stream()
+                .map(CollegeResponseDto::new)
+                .toList();
         pageCount = resData.getTotalPages();
     }
 }
