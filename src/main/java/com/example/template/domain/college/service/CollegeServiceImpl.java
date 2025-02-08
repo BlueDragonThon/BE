@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +73,23 @@ public class CollegeServiceImpl implements CollegeService {
         alarmService.createAlarm(memberCollege);
 
         return memberCollege.getId();
+    }
+
+
+    @Transactional
+    public Long deleteMemberCollege(Member member, Long collegeId) {
+
+        College college = collegeRepository.findById(collegeId).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        Optional<MemberCollege> memberCollege = memberCollegeRepository.findByMemberAndCollege(member, college);
+
+        if (memberCollege.isPresent()) {
+            MemberCollege removeData = memberCollege.get();
+            memberCollegeRepository.delete(removeData);
+            alarmService.deleteAlarm(removeData);
+            return removeData.getId();
+        }
+        throw new GeneralHandler(ErrorCode._BAD_REQUEST);
     }
 
     @Override

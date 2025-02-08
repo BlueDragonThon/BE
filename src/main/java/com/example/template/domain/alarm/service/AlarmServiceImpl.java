@@ -61,4 +61,9 @@ public class AlarmServiceImpl implements AlarmService {
 
         return alarm.getId();
     }
+
+    @Override
+    public void deleteAlarm(MemberCollege memberCollege) {
+        alarmRepository.deleteByMemberCollege(memberCollege);
+    }
 }

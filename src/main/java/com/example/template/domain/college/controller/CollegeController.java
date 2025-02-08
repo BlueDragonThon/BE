@@ -89,6 +89,12 @@ public class CollegeController {
         return ApiResponse.onSuccess(result);
     }
 
+    @DeleteMapping("/like")
+    @Operation(summary = "대학교 찜 해제하기")
+    public ApiResponse<Long> deleteMemberCollege(@AuthUser Member member, @RequestParam("collegeId") Long collegeId){
+        return ApiResponse.onSuccess(collegeService.deleteMemberCollege(member, collegeId));
+    }
+
     @PostMapping("/like")
     @Operation(summary = "대학교 찜하기")
     public ApiResponse<Long> createMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") Long collegeId){
