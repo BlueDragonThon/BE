@@ -25,7 +25,6 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
-
 aws:
   s3:
     bucket: ${AWS_BUCKET_NAME}

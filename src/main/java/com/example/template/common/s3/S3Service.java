@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -32,7 +33,7 @@ public class S3Service {
         // S3에서 지정된 파일 가져오기
 
         log.info("파일을 가져옵니다");
-        S3Object s3Object = amazonS3.getObject(new GetObjectRequest(bucket, "UGGTHON DATA.csv"));
+        S3Object s3Object = amazonS3.getObject(new GetObjectRequest(bucket, "Data.csv"));
         log.info("파일 가져오기 성공");
 
         // try-with-resources로 자원 자동 관리
@@ -45,6 +46,12 @@ public class S3Service {
             csvReader.readNext();
 
             log.info("데이터를 읽습니다.");
+
+            while((row = csvReader.readNext()) != null) {
+                List<String> values = Arrays.stream(row).toList();
+
+                
+            }
 
         } catch (IOException | CsvValidationException e) {
             log.error("Failed to process CSV file from S3: {}", e.getMessage(), e);
