@@ -1,6 +1,7 @@
 package com.example.template.domain.college.service;
 
 import com.example.template.domain.college.dto.CollegeSearchDTO;
+import com.example.template.domain.college.dto.SwitchMemberCollegeDto;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.member.entity.Member;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ public interface CollegeService {
     CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate, int page);
     CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate);
     Long createMemberCollege(Member member, Long collegeId);
+    SwitchMemberCollegeDto switchMemberCollege(Member member, Long collegeId);
     Long deleteMemberCollege(Member member, Long collegeId);
     CollegeSearchDTO getCollegeByName(Member member, String name, int page);
     CollegeSearchDTO getCollegeByProgram(Member member, String program, int page);

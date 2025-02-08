@@ -151,18 +151,18 @@ public class CollegeController {
         return ApiResponse.onSuccess(result);
     }
 
-    @DeleteMapping("/like")
-    @Operation(summary = "대학교 찜 해제하기")
-    public ApiResponse<Long> deleteMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") Long collegeId) {
-        log.info("deleteMemberCollege 호출, member: {}, collegeId: {}", member, collegeId);
-        return ApiResponse.onSuccess(collegeService.deleteMemberCollege(member, collegeId));
-    }
+//    @DeleteMapping("/like")
+//    @Operation(summary = "대학교 찜 해제하기")
+//    public ApiResponse<Long> deleteMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") Long collegeId) {
+//        log.info("deleteMemberCollege 호출, member: {}, collegeId: {}", member, collegeId);
+//        return ApiResponse.onSuccess(collegeService.deleteMemberCollege(member, collegeId));
+//    }
 
     @PostMapping("/like")
     @Operation(summary = "대학교 찜하기")
-    public ApiResponse<Long> createMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") int collegeId) {
+    public ApiResponse<SwitchMemberCollegeDto> createMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") int collegeId) {
         log.info("createMemberCollege 호출, member: {}, collegeId: {}", member, collegeId);
-        return ApiResponse.onSuccess(collegeService.createMemberCollege(member, (long) collegeId));
+        return ApiResponse.onSuccess(collegeService.switchMemberCollege(member, (long) collegeId));
     }
 
     @PostMapping("/likeSearch")

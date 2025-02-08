@@ -5,6 +5,7 @@ import com.example.template.common.response.status.ErrorCode;
 import com.example.template.domain.alarm.service.AlarmService;
 import com.example.template.domain.college.dto.CollegeResponseDto;
 import com.example.template.domain.college.dto.CollegeSearchDTO;
+import com.example.template.domain.college.dto.SwitchMemberCollegeDto;
 import com.example.template.domain.college.entity.College;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.repository.CollegeRepository;
@@ -85,6 +86,36 @@ public class CollegeServiceImpl implements CollegeService {
 
         log.info("Member college added with ID: {}", memberCollege.getId());
         return memberCollege.getId();
+    }
+
+    @Override
+    @Transactional
+    public SwitchMemberCollegeDto switchMemberCollege(Member member, Long collegeId) {
+        log.info("Member {} is switching college with ID: {}", member.getName(), collegeId);
+
+        College college = collegeRepository.findById(collegeId).orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        Optional<MemberCollege> memberCollege = memberCollegeRepository.findByMemberAndCollege(member, college);
+
+        if (memberCollege.isPresent()) {
+            MemberCollege removeData = memberCollege.get();
+            alarmService.deleteAlarm(removeData);
+            memberCollegeRepository.delete(removeData);
+
+            log.info("Member college with ID {} deleted successfully", removeData.getId());
+            return new SwitchMemberCollegeDto(removeData.getId(),"삭제");
+        } else {
+
+            MemberCollege addData = MemberCollege.builder()
+                    .member(member)
+                    .college(college)
+                    .build();
+
+            memberCollegeRepository.save(addData);
+            alarmService.createAlarm(addData);
+            log.info("Member college added with ID: {}", addData.getId());
+            return new SwitchMemberCollegeDto(addData.getId(),"생성");
+        }
     }
 
     @Transactional
