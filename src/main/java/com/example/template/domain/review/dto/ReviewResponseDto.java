@@ -1,11 +1,8 @@
 package com.example.template.domain.review.dto;
 
-import com.example.template.domain.member.entity.Member;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,6 +12,10 @@ import lombok.*;
 public class ReviewResponseDto {
     private long id;
     private String title;
+    private String collegeName;
+    private String programName;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private String content;
     private String writer;
     private Boolean isUserCreated;
