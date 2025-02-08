@@ -151,7 +151,7 @@ public class CollegeServiceImpl implements CollegeService {
         log.info("Searching colleges by distance for member: {}, page: {}, coordinates: ({}, {})", member.getName(), page, coordinate.getAcr(), coordinate.getDwn());
         Page<CollegeResponseDto> result = collegeRepository.searchCollegesByDistanceWithFavorites(
                 PageRequest.of(page - 1, PAGE_SIZE),
-                member, coordinate.getAcr(), coordinate.getDwn());
+                coordinate.getAcr(), coordinate.getDwn(), member);
         return CollegeSearchDTO.builder()
                 .result(result.toList())
                 .pageCount(result.getTotalPages())
