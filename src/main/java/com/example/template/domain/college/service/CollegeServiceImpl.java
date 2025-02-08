@@ -117,5 +117,17 @@ public class CollegeServiceImpl implements CollegeService {
     public CollegeSearchDTO searchCollegesByDistance(Member member, Coordinate coordinate) {
         return searchCollegesByDistance(member, coordinate, 1);
     }
+
+    @Override
+    public CollegeSearchDTO searchFavorites(Member member, int page) {
+        return new CollegeSearchDTO(
+                memberCollegeRepository.findByFavorites(
+                        PageRequest.of(page-1, PAGE_SIZE),member));
+    }
+
+    @Override
+    public CollegeSearchDTO searchFavorites(Member member) {
+        return searchFavorites(member, 1);
+    }
 }
 
