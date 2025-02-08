@@ -14,6 +14,7 @@ public interface CollegeService {
     CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate, int page);
     CollegeSearchDTO searchCollegesByDistance(Coordinate coordinate);
     Long createMemberCollege(Member member, Long collegeId);
+    Long deleteMemberCollege(Member member, Long collegeId);
     CollegeSearchDTO getCollegeByName(Member member, String name, int page);
     CollegeSearchDTO getCollegeByProgram(Member member, String program, int page);
     CollegeSearchDTO getCollegeByName(Member member, String name);

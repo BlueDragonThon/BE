@@ -1,6 +1,7 @@
 package com.example.template.domain.alarm.repository;
 
 import com.example.template.domain.alarm.entity.Alarm;
+import com.example.template.domain.mapping.MemberCollege;
 import com.example.template.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -13,4 +14,6 @@ import java.util.List;
 public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 
     List<Alarm> findAllByMemberCollege_Member(@Param("member") Member member);
+
+    void deleteByMemberCollege(MemberCollege memberCollege);
 }

@@ -10,4 +10,5 @@ public interface AlarmService {
     void createAlarm(MemberCollege memberCollege);
     List<AlarmResponseDto> getAllAlarms(Member member);
     Long deleteAlarm(Member member, Long notificationId);
+    void deleteAlarm(MemberCollege memberCollege);
 }

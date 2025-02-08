@@ -8,7 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface MemberCollegeRepository extends JpaRepository<MemberCollege, Long> {
     @Query("select mc.college FROM MemberCollege mc where mc.member=:member order by mc.id asc")
     Page<College> findByFavorites(Pageable pageable, Member member);
+
+    Optional<MemberCollege> findByMemberAndCollege(Member member, College college);
 }
