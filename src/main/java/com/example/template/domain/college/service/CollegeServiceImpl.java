@@ -1,6 +1,5 @@
 package com.example.template.domain.college.service;
 
-import com.example.template.domain.college.dto.CollegeResponseDto;
 import com.example.template.domain.college.entity.College;
 import com.example.template.domain.college.entity.Coordinate;
 import com.example.template.domain.college.repository.CollegeRepository;
@@ -9,8 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class CollegeServiceImpl implements CollegeService {
@@ -18,22 +15,22 @@ public class CollegeServiceImpl implements CollegeService {
     private final CollegeRepository collegeRepository;
     private static final int PAGE_SIZE = 5;
 
-    @Override
-    public List<CollegeResponseDto> getCollegeByName(String name) {
-        List<College> collegeList = collegeRepository.findAllByNameContaining(name);
+    public Page<College> getCollegeByName(String name, int page) {
+        return collegeRepository.findAllByNameContaining(PageRequest.of(page-1, PAGE_SIZE),name);
+    }
 
-        return collegeList.stream()
-                .map(CollegeResponseDto::new)
-                .toList();
+    public Page<College> getCollegeByProgram(String program, int page) {
+        return collegeRepository.findAllByProgramContaining(PageRequest.of(page-1, PAGE_SIZE),program);
     }
 
     @Override
-    public List<CollegeResponseDto> getCollegeByProgram(String program) {
-        List<College> collegeList = collegeRepository.findAllByProgramContaining(program);
+    public Page<College> getCollegeByName(String name) {
+        return getCollegeByName(name, 1);
+    }
 
-        return collegeList.stream()
-                .map(CollegeResponseDto::new)
-                .toList();
+    @Override
+    public Page<College> getCollegeByProgram(String program) {
+        return getCollegeByProgram(program, 1);
     }
 
     public Page<College> searchCollegesByDistance(Coordinate coordinate, int page) {
