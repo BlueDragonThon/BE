@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CollegeResponseDto {
-    private Long id;
+    private int id;
     private String name;
     private String headmaster;
     private String contactInfo;
@@ -23,7 +23,7 @@ public class CollegeResponseDto {
     private Boolean favorites;
 
     public CollegeResponseDto(College college) {
-        id = college.getId();
+        id = (int) college.getId();
         name = college.getName();
         headmaster = college.getHeadmaster();
         contactInfo = college.getContactNo();
