@@ -2,8 +2,6 @@ package com.example.template.domain.review.service;
 
 import com.example.template.common.exception.handler.GeneralHandler;
 import com.example.template.common.response.status.ErrorCode;
-import com.example.template.domain.college.entity.College;
-import com.example.template.domain.college.repository.CollegeRepository;
 import com.example.template.domain.member.entity.Member;
 import com.example.template.domain.review.dto.ReviewRequestDto;
 import com.example.template.domain.review.dto.ReviewResponseDto;
@@ -21,16 +19,12 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final CollegeRepository collegeRepository;
 
     @Override
     public Long createReview(ReviewRequestDto reviewRequestDto, Member member) {
-        College college = collegeRepository.findById(reviewRequestDto.getCollegeId())
-                .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
-
         Review review = Review.builder()
                 .member(member)
-                .college(college)
+                .college(reviewRequestDto.getCollege())
                 .program(reviewRequestDto.getProgram())
                 .content(reviewRequestDto.getContent())
                 .build();
@@ -59,11 +53,10 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviews.stream()
                 .map(review -> ReviewResponseDto.builder()
-                        .id(review.getId())
-                        .collegeName(review.getCollege().getName())
-                        .programName(review.getProgram())
-                        .createdAt(review.getCreatedAt().toLocalDate())
-                        .modifiedAt(review.getModifiedAt().toLocalDate())
+                        .reviewId((int) review.getId())
+                        .university(review.getCollege())
+                        .program(review.getProgram())
+                        .createdAt(review.getCreatedAt().toLocalDate().toString())
                         .content(review.getContent())
                         .writer(review.getMember().getName())
                         .isUserCreated(review.getMember().getId() == member.getId())
@@ -72,19 +65,16 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<ReviewResponseDto> getAllReviewsByCollege(Long collegeId, Member member) {
-        College college = collegeRepository.findById(collegeId)
-                .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+    public List<ReviewResponseDto> getAllReviewsByCollege(String college, Member member) {
 
         List<Review> reviews = reviewRepository.findAllByCollegeOrderByCreatedAtDesc(college);
 
         return reviews.stream()
                 .map(review -> ReviewResponseDto.builder()
-                        .id(review.getId())
-                        .collegeName(review.getCollege().getName())
-                        .programName(review.getProgram())
-                        .createdAt(review.getCreatedAt().toLocalDate())
-                        .modifiedAt(review.getModifiedAt().toLocalDate())
+                        .reviewId((int) review.getId())
+                        .university(review.getCollege())
+                        .program(review.getProgram())
+                        .createdAt(review.getCreatedAt().toLocalDate().toString())
                         .content(review.getContent())
                         .writer(review.getMember().getName())
                         .isUserCreated(review.getMember().getId() == member.getId())

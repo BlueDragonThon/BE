@@ -43,8 +43,8 @@ public class ReviewController {
     @GetMapping("/read/college")
     @Operation(summary = "리뷰 검색(대학 기준)")
     public ApiResponse<List<ReviewResponseDto>> readReviewByCollege(@Parameter(hidden = true) @AuthUser Member member,
-                                                                    @RequestParam("collegeId") int id) {
-        return ApiResponse.onSuccess(reviewService.getAllReviewsByCollege((long) id, member));
+                                                                    @RequestParam("collegeId") String college) {
+        return ApiResponse.onSuccess(reviewService.getAllReviewsByCollege(college, member));
     }
 
     @PostMapping("/update")

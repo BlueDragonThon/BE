@@ -1,6 +1,5 @@
 package com.example.template.domain.review.repository;
 
-import com.example.template.domain.college.entity.College;
 import com.example.template.domain.review.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +10,5 @@ import java.util.List;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findAllByOrderByCreatedAtDesc();
 
-    List<Review> findAllByCollegeOrderByCreatedAtDesc(College college);
+    List<Review> findAllByCollegeOrderByCreatedAtDesc(String college);
 }

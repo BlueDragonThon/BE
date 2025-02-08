@@ -9,6 +9,6 @@ import lombok.*;
 @Getter
 public class ReviewRequestDto {
     private String content;
-    private Long collegeId;
+    private String college;
     private String program;
 }
