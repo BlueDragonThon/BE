@@ -18,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -106,23 +108,29 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO getCollegeByName(Member member, String name, int page) {
-        log.info("Searching colleges by name for member: {}, name: {}, page: {}", member.getName(), name, page);
-        Page<CollegeResponseDto> result = collegeRepository.findAllByNameWithFavorites
-                (PageRequest.of(page - 1, PAGE_SIZE), '%' + name + '%', member);
+        Page<College> allByNameContaining = collegeRepository.findAllByNameContaining(PageRequest.of(page - 1, PAGE_SIZE), name);
+        List<CollegeResponseDto> result = new ArrayList<>(PAGE_SIZE);
+        for (College college : allByNameContaining) {
+            result.add(new CollegeResponseDto(college,
+                    memberCollegeRepository.findByMemberAndCollege(member, college).isPresent()));
+        }
         return CollegeSearchDTO.builder()
-                .result(result.toList())
-                .pageCount(result.getTotalPages())
+                .result(result)
+                .pageCount(allByNameContaining.getTotalPages())
                 .build();
     }
 
     @Override
     public CollegeSearchDTO getCollegeByProgram(Member member, String program, int page) {
-        log.info("Searching colleges by program for member: {}, program: {}, page: {}", member.getName(), program, page);
-        Page<CollegeResponseDto> result = collegeRepository.findAllByProgramWithFavorites
-                (PageRequest.of(page - 1, PAGE_SIZE), '%' + program + '%', member);
+        Page<College> allByNameContaining = collegeRepository.findAllByProgramContaining(PageRequest.of(page - 1, PAGE_SIZE), program);
+        List<CollegeResponseDto> result = new ArrayList<>(PAGE_SIZE);
+        for (College college : allByNameContaining) {
+            result.add(new CollegeResponseDto(college,
+                    memberCollegeRepository.findByMemberAndCollege(member, college).isPresent()));
+        }
         return CollegeSearchDTO.builder()
-                .result(result.toList())
-                .pageCount(result.getTotalPages())
+                .result(result)
+                .pageCount(allByNameContaining.getTotalPages())
                 .build();
     }
 
@@ -143,7 +151,7 @@ public class CollegeServiceImpl implements CollegeService {
         log.info("Searching colleges by distance for member: {}, page: {}, coordinates: ({}, {})", member.getName(), page, coordinate.getAcr(), coordinate.getDwn());
         Page<CollegeResponseDto> result = collegeRepository.searchCollegesByDistanceWithFavorites(
                 PageRequest.of(page - 1, PAGE_SIZE),
-                coordinate.getAcr(), coordinate.getDwn(), member);
+                member, coordinate.getAcr(), coordinate.getDwn());
         return CollegeSearchDTO.builder()
                 .result(result.toList())
                 .pageCount(result.getTotalPages())
