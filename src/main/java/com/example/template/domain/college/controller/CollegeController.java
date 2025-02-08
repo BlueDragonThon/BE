@@ -8,6 +8,7 @@ import com.example.template.domain.college.service.CollegeService;
 import com.example.template.domain.member.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,38 +20,69 @@ public class CollegeController {
 
     private final CollegeService collegeService;
     @PostMapping("/search")
-    public ApiResponse<CollegeSearchDTO> searchCollegesByDistance(@RequestBody CollegeSearchParamDTO param) {
+    public ApiResponse<CollegeSearchDTO> searchCollegesByMemberDistance(@AuthUser Member member,
+                                                                        @Nullable @RequestParam("page") Integer page) {
         CollegeSearchDTO result;
-        if (param.getAcr()==null||param.getDwn()==null) throw new NullPointerException("위도, 경도 정보가 없습니다.");
+        Coordinate coordinate = member.getCoordinate();
+        if (coordinate==null)
+            throw new NullPointerException("위도, 경도 정보가 없습니다.");
+        if (page == null)
+            result = collegeService.searchCollegesByDistance(member, coordinate);
+        else result = collegeService.searchCollegesByDistance(member, coordinate, page);
+        return ApiResponse.onSuccess(result);
+    }
+    @PostMapping("/distance")
+    public ApiResponse<CollegeSearchDTO> searchCollegesByDistance(@AuthUser Member member,
+                                                                  @RequestBody CollegeSearchParamDTO param) {
+        CollegeSearchDTO result;
+        if (param.getAcr()==null||param.getDwn()==null)
+            throw new NullPointerException("위도, 경도 정보가 없습니다.");
         Coordinate coordinate = Coordinate.builder()
                 .acr(param.getAcr())
                 .dwn(param.getDwn()).build();
-        if(param.getPage()==null)
-            result = new CollegeSearchDTO(collegeService.searchCollegesByDistance(coordinate));
-        else result = new CollegeSearchDTO(collegeService.searchCollegesByDistance(coordinate, param.getPage()));
+        if (member != null) {
+            if (param.getPage() == null)
+                result = collegeService.searchCollegesByDistance(member, coordinate);
+            else result = collegeService.searchCollegesByDistance(member, coordinate, param.getPage());
+        } else {
+            if (param.getPage() == null)
+                result = collegeService.searchCollegesByDistance(coordinate);
+            else result = collegeService.searchCollegesByDistance(coordinate, param.getPage());
+        }
         return ApiResponse.onSuccess(result);
-
     }
 
     @PostMapping("/name")
     @Operation(summary = "대학 이름 기반으로 검색")
-    public ApiResponse<CollegeSearchDTO> searchCollegeByName(@RequestBody NamePageDto dto) {
+    public ApiResponse<CollegeSearchDTO> searchCollegeByName(@AuthUser Member member,
+                                                             @RequestBody NamePageDto dto) {
         String name = dto.getName();
         CollegeSearchDTO result;
         if (name==null||name.isBlank()) throw new NullPointerException("이름이 없습니다.");
-        if (dto.getPage()==null) result = new CollegeSearchDTO(collegeService.getCollegeByName(name));
-        else result = new CollegeSearchDTO(collegeService.getCollegeByName(name, dto.getPage()));
+        if (member != null) {
+            if (dto.getPage()==null) result = collegeService.getCollegeByName(member, name);
+            else result = collegeService.getCollegeByName(member, name, dto.getPage());
+        }else{
+            if (dto.getPage()==null) result = collegeService.getCollegeByName(name);
+            else result = collegeService.getCollegeByName(name, dto.getPage());
+        }
         return ApiResponse.onSuccess(result);
     }
 
     @PostMapping("/program")
     @Operation(summary = "프로그램 기반으로 검색")
-    public ApiResponse<CollegeSearchDTO> searchCollegeByProgram(@RequestBody ProgramPageDto dto) {
+    public ApiResponse<CollegeSearchDTO> searchCollegeByProgram(@AuthUser Member member,
+                                                                @RequestBody ProgramPageDto dto) {
         String program = dto.getProgram();
         CollegeSearchDTO result;
         if (program==null||program.isBlank()) throw new NullPointerException("프로그램 정보가 없습니다.");
-        if (dto.getPage()==null) result = new CollegeSearchDTO(collegeService.getCollegeByProgram(program));
-        else result = new CollegeSearchDTO(collegeService.getCollegeByProgram(program, dto.getPage()));
+        if (member != null) {
+            if (dto.getPage()==null) result = collegeService.getCollegeByProgram(member, program);
+            else result = collegeService.getCollegeByProgram(member, program, dto.getPage());
+        }else{
+            if (dto.getPage()==null) result = collegeService.getCollegeByProgram(program);
+            else result = collegeService.getCollegeByProgram(program, dto.getPage());
+        }
         return ApiResponse.onSuccess(result);
     }
 

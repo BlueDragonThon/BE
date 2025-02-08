@@ -1,7 +1,10 @@
 package com.example.template.domain.college.dto;
 
 import com.example.template.domain.college.entity.College;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +20,7 @@ public class CollegeResponseDto {
     private String contactInfo;
     private String address;
     private List<String> program;
+    private boolean favorites;
 
     public CollegeResponseDto(College college) {
         id = college.getId();
@@ -28,7 +32,13 @@ public class CollegeResponseDto {
         else program = Arrays.stream(college.getProgram().split(","))
                 .map(String::trim)
                 .toList();
+        favorites = false;
         nullToNone();
+    }
+
+    public CollegeResponseDto(College college, boolean favorites) {
+        this(college);
+        this.favorites = favorites;
     }
 
     private static final String NONE_STR = "없음";
