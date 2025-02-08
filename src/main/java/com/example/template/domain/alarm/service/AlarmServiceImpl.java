@@ -56,22 +56,6 @@ public class AlarmServiceImpl implements AlarmService {
                         .build())
                 .toList());
 
-        alarmResponseDtoList.add(AlarmResponseDto.builder()
-                .id(20L)
-                .userId(20L)
-                .title("노인 대학 마감이 얼마 남지 않았어요!")
-                .content("2월 9일까지 얼른 지원하세요!")
-                .date(LocalDate.now())
-                .build());
-
-        alarmResponseDtoList.add(AlarmResponseDto.builder()
-                .id(21L)
-                .userId(21L)
-                .title("서울 노인 대학 마감이 얼마 남지 않았어요!")
-                .content("2월 9일까지 얼른 지원하세요!")
-                .date(LocalDate.now())
-                .build());
-
         return alarmResponseDtoList;
     }
 
