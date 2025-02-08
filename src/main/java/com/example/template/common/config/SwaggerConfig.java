@@ -1,7 +1,10 @@
 package com.example.template.common.config;
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +21,19 @@ public class SwaggerConfig {
                 .description("This is the API documentation for My API") // API의 설명 설정
                 .version("1.0.0"); // API의 버전 설정
 
-        // OpenAPI 객체 생성 및 구성
+        String jwtSchemeName = "JWT TOKEN";
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwtSchemeName);
+        Components components = new Components()
+                .addSecuritySchemes(jwtSchemeName, new SecurityScheme()
+                        .name(jwtSchemeName)
+                        .type(SecurityScheme.Type.HTTP) // HTTP 방식
+                        .scheme("bearer")
+                        .bearerFormat("JWT"));
+
         return new OpenAPI()
-                .addServersItem(new Server().url("/")) // 기본 서버 URL 설정 (현재 루트 경로)
-                .info(info); // API 정보 추가
+                .addServersItem(new Server().url("/"))
+                .info(info)
+                .addSecurityItem(securityRequirement)
+                .components(components);
     }
 }
