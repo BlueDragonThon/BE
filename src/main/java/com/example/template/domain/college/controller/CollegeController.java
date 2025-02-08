@@ -91,7 +91,7 @@ public class CollegeController {
 
     @DeleteMapping("/like")
     @Operation(summary = "대학교 찜 해제하기")
-    public ApiResponse<Long> deleteMemberCollege(@AuthUser Member member, @RequestParam("collegeId") Long collegeId){
+    public ApiResponse<Long> deleteMemberCollege(@Parameter(hidden = true) @AuthUser Member member, @RequestParam("collegeId") Long collegeId){
         return ApiResponse.onSuccess(collegeService.deleteMemberCollege(member, collegeId));
     }
 

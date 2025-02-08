@@ -27,7 +27,7 @@ public class AlarmServiceImpl implements AlarmService {
 
         Alarm alarm = Alarm.builder()
                 .title(college.getName() + "마감이 얼마 남지 않았어요!")
-                .content(college.getDate() + "까지 얼른 지원하세요!")
+                .content(college.getDate().getMonthValue() + "월" + college.getDate().getDayOfMonth() + "일" + "까지 얼른 지원하세요!")
                 .date(college.getDate())
                 .memberCollege(memberCollege)
                 .build();

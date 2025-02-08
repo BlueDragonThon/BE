@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class S3Service {
                                 .acr(Double.parseDouble(values.get(6)))
                                 .build())
                         .program(values.get(7))
-                        .date(new Date(1-2-3))
+                        .date(LocalDate.now())
                         .build();
 
                 collegeRepository.save(college);

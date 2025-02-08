@@ -2,6 +2,7 @@ package com.example.template.domain.alarm.dto;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -14,5 +15,5 @@ public class AlarmResponseDto {
     private Long userId;
     private String title;
     private String content;
-    private Date date;
+    private LocalDate date;
 }

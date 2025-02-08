@@ -1,10 +1,10 @@
 package com.example.template.domain.alarm.entity;
 
 import com.example.template.domain.mapping.MemberCollege;
-import com.example.template.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -26,6 +26,6 @@ public class Alarm {
 
     private String content;
 
-    private Date date;
+    private LocalDate date;
 
 }

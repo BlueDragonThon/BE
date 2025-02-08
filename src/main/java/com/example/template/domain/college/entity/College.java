@@ -3,6 +3,7 @@ package com.example.template.domain.college.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -47,5 +48,5 @@ public class College {
 
     private String program;
 
-    private Date date;
+    private LocalDate date;
 }
