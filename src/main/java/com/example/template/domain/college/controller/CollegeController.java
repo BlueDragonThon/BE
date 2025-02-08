@@ -63,6 +63,7 @@ public class CollegeController {
                                                              @RequestBody NamePageDto dto) {
         String name = dto.getName();
         CollegeSearchDTO result;
+
         if (name==null||name.isBlank()) throw new NullPointerException("이름이 없습니다.");
         if (member != null) {
             if (dto.getPage()==null) result = collegeService.getCollegeByName(member, name);

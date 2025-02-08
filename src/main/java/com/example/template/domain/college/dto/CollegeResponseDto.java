@@ -20,7 +20,7 @@ public class CollegeResponseDto {
     private String contactInfo;
     private String address;
     private List<String> program;
-    private boolean favorites;
+    private Boolean favorites;
 
     public CollegeResponseDto(College college) {
         id = college.getId();
