@@ -11,6 +11,7 @@ public interface ReviewService {
     Long createReview(ReviewRequestDto reviewRequestDto, Member member);
     Long updateReview(ReviewUpdateDto reviewUpdateDto, Member member);
     List<ReviewResponseDto> getAllReviews(Member member);
+    List<ReviewResponseDto> getAllReviewsByCollege(Long collegeId, Member member);
     Long deleteReview(long reviewId, Member member);
 
 }

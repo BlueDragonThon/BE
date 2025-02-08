@@ -2,12 +2,10 @@ package com.example.template.domain.review.controller;
 
 import com.example.template.common.annotation.AuthUser;
 import com.example.template.common.response.ApiResponse;
-import com.example.template.domain.alarm.dto.AlarmResponseDto;
 import com.example.template.domain.member.entity.Member;
 import com.example.template.domain.review.dto.ReviewRequestDto;
 import com.example.template.domain.review.dto.ReviewResponseDto;
 import com.example.template.domain.review.dto.ReviewUpdateDto;
-import com.example.template.domain.review.entity.Review;
 import com.example.template.domain.review.service.ReviewService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,6 +38,13 @@ public class ReviewController {
     @Operation(summary = "리뷰 읽어오기")
     public ApiResponse<List<ReviewResponseDto>> readReview(@Parameter(hidden = true) @AuthUser Member member) {
         return ApiResponse.onSuccess(reviewService.getAllReviews(member));
+    }
+
+    @GetMapping("/read/college")
+    @Operation(summary = "리뷰 검색(대학 기준)")
+    public ApiResponse<List<ReviewResponseDto>> readReviewByCollege(@Parameter(hidden = true) @AuthUser Member member,
+                                                                    @RequestParam("collegeId") int id) {
+        return ApiResponse.onSuccess(reviewService.getAllReviewsByCollege((long) id, member));
     }
 
     @PostMapping("/update")
