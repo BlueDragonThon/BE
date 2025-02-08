@@ -1,4 +1,5 @@
-![風流堂 (2).png](attachment:996266e6-c43c-425a-974a-1db0532de412:風流堂_(2).png)
+
+![風流堂 (2)](https://github.com/user-attachments/assets/16b93d30-f619-4ebe-a58a-d076ea877e1d)
 
 # **📖 원대 (청룡톤 404조)**
 
@@ -28,7 +29,7 @@
 
 # **📚 Project Structure**
 
-![image.png](attachment:2f01b5a4-18d2-47a6-b2ed-73f5ff4bb81c:image.png)
+![구조](https://github.com/user-attachments/assets/c13170a9-7fa1-4cf6-9567-94f0b8e837d9)
 
 ---
 
@@ -66,15 +67,10 @@ http://3.38.151.77:8080/swagger-ui/index.html#/
 - 배포된 서버로 api 실행 가능
 
 # ✔️ 프로젝트 사진
+![1](https://github.com/user-attachments/assets/bd0e780b-258d-4a53-90cb-e477447ff80e)
+![2](https://github.com/user-attachments/assets/c56396eb-a78f-43f7-98e4-8a2d93032f84)
+![3](https://github.com/user-attachments/assets/30ab20a5-a2ec-4087-9b19-a39fe21a9963)
+![4](https://github.com/user-attachments/assets/8d398994-2bb5-4bb7-b554-a91185585008)
+![5](https://github.com/user-attachments/assets/d669b34a-b457-4ce0-8705-4eba9087e8c1)
+![6](https://github.com/user-attachments/assets/c768a405-0164-4e40-8958-cbb29cc271d4)
 
-![image.png](attachment:c8e5aea9-766e-4a1d-bf92-a8452dd54fe8:image.png)
-
-![image.png](attachment:3b92fec4-a414-4654-b13c-4eea379f16bb:image.png)
-
-![image.png](attachment:4c50822e-cc8d-442f-925b-1b6e1f167d92:image.png)
-
-![image.png](attachment:007abcca-6946-4ad2-b0ca-a7284d078438:image.png)
-
-![image.png](attachment:535568f8-dba7-4445-b1cc-6bb977496773:image.png)
-
-![image.png](attachment:da676a97-dadb-49b7-84ef-956abd3ad3c0:image.png)
