@@ -120,9 +120,12 @@ public class CollegeServiceImpl implements CollegeService {
 
     @Override
     public CollegeSearchDTO searchFavorites(Member member, int page) {
-        return new CollegeSearchDTO(
-                memberCollegeRepository.findByFavorites(
-                        PageRequest.of(page-1, PAGE_SIZE),member));
+        Page<College> byFavorites = memberCollegeRepository.findByFavorites(
+                PageRequest.of(page - 1, PAGE_SIZE), member);
+        return CollegeSearchDTO.builder()
+                .result(byFavorites.stream().map(c -> new CollegeResponseDto(c, true)).toList())
+                .pageCount(byFavorites.getTotalPages())
+                .build();
     }
 
     @Override
