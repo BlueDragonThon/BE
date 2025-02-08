@@ -2,6 +2,7 @@ package com.example.template.domain.college.service;
 
 import com.example.template.common.exception.handler.GeneralHandler;
 import com.example.template.common.response.status.ErrorCode;
+import com.example.template.domain.alarm.service.AlarmService;
 import com.example.template.domain.college.dto.CollegeResponseDto;
 import com.example.template.domain.college.dto.CollegeSearchDTO;
 import com.example.template.domain.college.entity.College;
@@ -21,6 +22,7 @@ public class CollegeServiceImpl implements CollegeService {
 
     private final CollegeRepository collegeRepository;
     private final MemberCollegeRepository memberCollegeRepository;
+    private final AlarmService alarmService;
     private static final int PAGE_SIZE = 5;
 
     public CollegeSearchDTO getCollegeByName(String name, int page) {
@@ -59,11 +61,13 @@ public class CollegeServiceImpl implements CollegeService {
         College college = collegeRepository.findById(collegeId).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         MemberCollege memberCollege = MemberCollege.builder()
-                .member(member)
+                 .member(member)
                 .college(college)
                 .build();
 
         memberCollegeRepository.save(memberCollege);
+
+        alarmService.createAlarm(memberCollege);
 
         return memberCollege.getId();
     }
