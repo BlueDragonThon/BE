@@ -8,7 +8,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 public class ReviewRequestDto {
-    private String title;
     private String content;
     private Long collegeId;
     private String program;

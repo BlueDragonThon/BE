@@ -9,6 +9,5 @@ import lombok.*;
 @Getter
 public class ReviewUpdateDto {
     private long reviewId;
-    private String title;
     private String content;
 }

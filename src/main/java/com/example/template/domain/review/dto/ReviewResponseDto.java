@@ -2,7 +2,7 @@ package com.example.template.domain.review.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -11,11 +11,10 @@ import java.time.LocalDateTime;
 @Getter
 public class ReviewResponseDto {
     private long id;
-    private String title;
     private String collegeName;
     private String programName;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private LocalDate createdAt;
+    private LocalDate modifiedAt;
     private String content;
     private String writer;
     private Boolean isUserCreated;

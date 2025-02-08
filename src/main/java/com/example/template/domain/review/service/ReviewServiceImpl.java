@@ -32,7 +32,6 @@ public class ReviewServiceImpl implements ReviewService {
                 .member(member)
                 .college(college)
                 .program(reviewRequestDto.getProgram())
-                .title(reviewRequestDto.getTitle())
                 .content(reviewRequestDto.getContent())
                 .build();
 
@@ -47,7 +46,6 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = reviewRepository.findById(reviewUpdateDto.getReviewId())
                 .orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
-        review.setTitle(reviewUpdateDto.getTitle());
         review.setContent(reviewUpdateDto.getContent());
 
         reviewRepository.save(review);
@@ -62,11 +60,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews.stream()
                 .map(review -> ReviewResponseDto.builder()
                         .id(review.getId())
-                        .title(review.getTitle())
                         .collegeName(review.getCollege().getName())
                         .programName(review.getProgram())
-                        .createdAt(review.getCreatedAt())
-                        .modifiedAt(review.getModifiedAt())
+                        .createdAt(review.getCreatedAt().toLocalDate())
+                        .modifiedAt(review.getModifiedAt().toLocalDate())
                         .content(review.getContent())
                         .writer(review.getMember().getName())
                         .isUserCreated(review.getMember().getId() == member.getId())
@@ -84,11 +81,10 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews.stream()
                 .map(review -> ReviewResponseDto.builder()
                         .id(review.getId())
-                        .title(review.getTitle())
                         .collegeName(review.getCollege().getName())
                         .programName(review.getProgram())
-                        .createdAt(review.getCreatedAt())
-                        .modifiedAt(review.getModifiedAt())
+                        .createdAt(review.getCreatedAt().toLocalDate())
+                        .modifiedAt(review.getModifiedAt().toLocalDate())
                         .content(review.getContent())
                         .writer(review.getMember().getName())
                         .isUserCreated(review.getMember().getId() == member.getId())
