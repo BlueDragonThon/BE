@@ -2,6 +2,8 @@ package com.example.template.domain.review.service;
 
 import com.example.template.common.exception.handler.GeneralHandler;
 import com.example.template.common.response.status.ErrorCode;
+import com.example.template.domain.college.entity.College;
+import com.example.template.domain.college.repository.CollegeRepository;
 import com.example.template.domain.member.entity.Member;
 import com.example.template.domain.review.dto.ReviewRequestDto;
 import com.example.template.domain.review.dto.ReviewResponseDto;
@@ -19,12 +21,17 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final CollegeRepository collegeRepository;
 
     @Override
     public Long createReview(ReviewRequestDto reviewRequestDto, Member member) {
+        College college = collegeRepository.findById(reviewRequestDto.getCollegeId())
+                .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         Review review = Review.builder()
                 .member(member)
+                .college(college)
+                .program(reviewRequestDto.getProgram())
                 .title(reviewRequestDto.getTitle())
                 .content(reviewRequestDto.getContent())
                 .build();
@@ -37,7 +44,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Long updateReview(ReviewUpdateDto reviewUpdateDto, Member member) {
 
-        Review review = reviewRepository.findById(reviewUpdateDto.getReviewId()).orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
+        Review review = reviewRepository.findById(reviewUpdateDto.getReviewId())
+                .orElseThrow(()-> new GeneralHandler(ErrorCode._BAD_REQUEST));
 
         review.setTitle(reviewUpdateDto.getTitle());
         review.setContent(reviewUpdateDto.getContent());
@@ -55,6 +63,32 @@ public class ReviewServiceImpl implements ReviewService {
                 .map(review -> ReviewResponseDto.builder()
                         .id(review.getId())
                         .title(review.getTitle())
+                        .collegeName(review.getCollege().getName())
+                        .programName(review.getProgram())
+                        .createdAt(review.getCreatedAt())
+                        .modifiedAt(review.getModifiedAt())
+                        .content(review.getContent())
+                        .writer(review.getMember().getName())
+                        .isUserCreated(review.getMember().getId() == member.getId())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReviewResponseDto> getAllReviewsByCollege(Long collegeId, Member member) {
+        College college = collegeRepository.findById(collegeId)
+                .orElseThrow(() -> new GeneralHandler(ErrorCode._BAD_REQUEST));
+
+        List<Review> reviews = reviewRepository.findAllByCollegeOrderByCreatedAtDesc(college);
+
+        return reviews.stream()
+                .map(review -> ReviewResponseDto.builder()
+                        .id(review.getId())
+                        .title(review.getTitle())
+                        .collegeName(review.getCollege().getName())
+                        .programName(review.getProgram())
+                        .createdAt(review.getCreatedAt())
+                        .modifiedAt(review.getModifiedAt())
                         .content(review.getContent())
                         .writer(review.getMember().getName())
                         .isUserCreated(review.getMember().getId() == member.getId())
